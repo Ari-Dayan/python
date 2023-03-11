@@ -30,17 +30,27 @@ class Player (pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.transform.scale (pygame.image.load(os.path.join("assets", "nave_pixelart.png")), (player_leng, player_heigh))
         self.rect = self.image.get_rect()
+
+    #def tiro(self)
+
 #esta es la clase de los meteoros, definimos la skin y la posicion_____________________________________________________________________________________________________________________
-class Meteor(pygame.sprite.Sprite):
-    
+class Meteor(pygame.sprite.Sprite):    
     def __init__(self):
+        
         super().__init__()
         meteor_size = random.randrange(20,50)
         self.image = pygame.transform.scale (pygame.image.load(os.path.join("assets", "meteoro_pixelart.png")), (meteor_size,meteor_size ))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
+    #en esta funcion se updatea la posicion de los meteoros 
+    def update (self, meteor_size):
+        self.rect.y +=1
+        if self.rect.y == 800:
+            self.rect.y = -meteor_size
+            self.rect.x = random.randrange(0, 1000)
 
-#estas son las listas que guardan la informacion del meteoro__________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+#estas son las listas que guardan la informacion de los meteoros y todos los sprites en pantalla__________________________________________________________________________________________________________________________________________________________________________________________________________________________
 meteor_list = pygame.sprite.Group()
 all_sprite = pygame.sprite.Group()
 
@@ -49,51 +59,51 @@ all_sprite = pygame.sprite.Group()
 #en este for crean al meteoro_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________x
 for i in range (50):
     meteor= Meteor()
+    #elegimos las valores posibles de x e y en los que puede spawnear
     meteor.rect.x = random.randrange(ventana[0]-30)
     meteor.rect.y = random.randrange(ventana[1]-30)
-
+    # este es el comandop que crea el objeto del meteoro y le da un sprite
     meteor_list.add(meteor)
     all_sprite.add(meteor)
     
 player = Player()
 all_sprite.add(player)
 
+
+
+
+
+
 #el bucle main______________________________________________________________________________________________________________________________________________________________________________
-while not done:
-    
-     
+while not done:   
+    #llamamos a la funcion para que los meteorosse muevan
+    all_sprite.update()
+
     if random.randrange(35) == 4:
 
         meteor= Meteor()
         meteor.rect.x = random.randrange(ventana[0]-30)
-        meteor.rect.y = random.randrange(ventana[1]-30)
+        meteor.rect.y = -50
         meteor_list.add(meteor)
         all_sprite.add(meteor)  
         
-        
     clock.tick(60)
-
     all_sprite.draw(screen)
 
     pygame.display.flip()
     # esta funcion es para cuando dos sprite se choquen _______________________________________________________________________________________________________________________________
     meteor_hit_list = pygame.sprite.spritecollide(player, meteor_list, True)
     # esta funcion es para cuando dos sprite se choquen _______________________________________________________________________________________________________________________________
+    
     for event in pygame.event.get():
-
         mouse_pos = pygame.mouse.get_pos()
         player.rect.x = mouse_pos[0]
         player.rect.y = mouse_pos[1]
       
-
         if event.type == pygame.QUIT:
            sys.exit()
     
- 
-    for meteor in meteor_hit_list:
-        score += 1
-        print (score)
-    
+
     screen.blit(background, [0,0])
 
     
