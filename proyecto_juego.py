@@ -61,7 +61,7 @@ class Meteor(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
     #en esta funcion se updatea la posicion de los meteoros 
     def update (self):
-        self.rect.y +=1
+        self.rect.y +=2
         if self.rect.y == 800:
             self.rect.y = -50
             self.rect.x = random.randrange(0, 1000)
@@ -103,7 +103,7 @@ while not done:
     all_sprite.update()
     
 
-    if random.randrange(35) == 4:
+    if random.randrange(20) == 4:
 
         meteor= Meteor()
         meteor.rect.x = random.randrange(ventana[0]-30)
@@ -118,7 +118,6 @@ while not done:
     # esta funcion es para cuando dos sprite se choquen _______________________________________________________________________________________________________________________________
     meteor_hit_list = pygame.sprite.spritecollide(player, meteor_list, True)
     meteor_hit_list = pygame.sprite.spritecollide(projectil, meteor_list, True)
-    projectil_hit_list = pygame.sprite .spritecollide(meteor, projectil_list,True)
     # esta funcion es para cuando dos sprite se choquen _______________________________________________________________________________________________________________________________
     
     for event in pygame.event.get():
